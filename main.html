@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anesu Mutonga — Data & Analytics Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+
+/* ─── RESET ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ─── TOKENS ──────────────────────────────────────────── */
+:root {
+  --jet:    #2d3142;
+  --silver: #bfc0c0;
+  --white:  #ffffff;
+  --coral:  #ef8354;
+  --slate:  #4f5d75;
+
+  --f-head: 'Merriweather', serif;
+  --f-body: 'Manrope', sans-serif;
+
+  /* grid */
+  --col-num:   64px;
+  --col-name:  260px;
+  --col-desc:  1fr;
+  --col-tags:  200px;
+
+  --rule: 1px solid var(--silver);
+  --pad-x: 80px;
+}
+
+/* ─── BASE ────────────────────────────────────────────── */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--f-body);
+  background: var(--white);
+  color: var(--jet);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* ─── HEADER BAR ──────────────────────────────────────── */
+.site-header {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 48px;
+  padding: 20px var(--pad-x);
+  border-bottom: var(--rule);
+}
+
+.brand {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--jet);
+  line-height: 1;
+}
+
+.brand span {
+  color: var(--coral);
+  font-weight: 400;
+}
+
+.site-nav {
+  display: flex;
+  gap: 32px;
+}
+
+.site-nav a {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--jet);
+  transition: color 0.18s;
+}
+
+.site-nav a:hover,
+.site-nav a.active { color: var(--coral); }
+
+.header-meta {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: var(--silver);
+  white-space: nowrap;
+}
+
+/* ─── HERO ────────────────────────────────────────────── */
+.hero {
+  padding: 48px var(--pad-x) 40px;
+  border-bottom: var(--rule);
+}
+
+.hero-eyebrow {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--silver);
+  margin-bottom: 16px;
+}
+
+.hero-title {
+  font-family: var(--f-head);
+  font-size: 48px;
+  font-weight: 400;
+  color: var(--jet);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--coral);
+}
+
+/* ─── TABLE HEADER ────────────────────────────────────── */
+.table-header {
+  display: grid;
+  grid-template-columns: var(--col-num) var(--col-name) var(--col-desc) var(--col-tags);
+  gap: 0 32px;
+  padding: 12px var(--pad-x);
+  border-bottom: var(--rule);
+}
+
+.table-header span {
+  font-family: var(--f-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.th-tags { text-align: right; }
+
+/* ─── PROJECT ROWS ────────────────────────────────────── */
+.project-row {
+  display: grid;
+  grid-template-columns: var(--col-num) var(--col-name) var(--col-desc) var(--col-tags);
+  gap: 0 32px;
+  align-items: center;
+  padding: 26px var(--pad-x);
+  border-bottom: var(--rule);
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s;
+}
+
+.project-row:hover { background: #fafafa; }
+
+/* cursor-following preview */
+.row-preview {
+  position: fixed;
+  width: 260px;
+  background: var(--jet);
+  padding: 20px 24px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 500;
+  transform: translate(20px, -50%);
+}
+
+.project-row:hover .row-preview { opacity: 1; }
+
+.row-preview-label {
+  font-family: var(--f-body);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--silver);
+  margin-bottom: 8px;
+}
+
+.row-preview-name {
+  font-family: var(--f-head);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--white);
+  line-height: 1.4;
+  margin-bottom: 10px;
+}
+
+.row-preview-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.row-preview-tag {
+  font-family: var(--f-body);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--coral);
+  border: 1px solid var(--coral);
+  padding: 3px 8px;
+}
+
+/* row cells */
+.row-num {
+  font-family: var(--f-body);
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--silver);
+  letter-spacing: 0.08em;
+  padding-top: 2px;
+}
+
+.row-name {
+  font-family: var(--f-head);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--jet);
+  line-height: 1.35;
+  transition: color 0.18s;
+}
+
+.project-row:hover .row-name { color: var(--coral); }
+
+.row-desc {
+  font-family: var(--f-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--slate);
+  line-height: 1.7;
+}
+
+.row-tags {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.row-tag {
+  font-family: var(--f-body);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--slate);
+  transition: color 0.18s;
+}
+
+.project-row:hover .row-tag { color: var(--coral); }
+
+/* ─── FOOTER ──────────────────────────────────────────── */
+.site-footer {
+  display: grid;
+  grid-template-columns: var(--col-num) var(--col-name) var(--col-desc) var(--col-tags);
+  gap: 0 32px;
+  align-items: start;
+  padding: 40px var(--pad-x) 56px;
+}
+
+.footer-label {
+  font-family: var(--f-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--silver);
+  grid-column: 1;
+  padding-top: 3px;
+}
+
+.footer-links {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.footer-links a {
+  font-family: var(--f-head);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--jet);
+  transition: color 0.18s;
+}
+
+.footer-links a:hover { color: var(--coral); }
+
+.footer-copy {
+  grid-column: 4;
+  text-align: right;
+}
+
+.footer-copy p {
+  font-family: var(--f-body);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: var(--silver);
+  line-height: 1.8;
+}
+
+/* ─── ABOUT OVERLAY ───────────────────────────────────── */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--white);
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.overlay-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 20px var(--pad-x);
+  border-bottom: var(--rule);
+}
+
+.overlay-close {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.18s;
+  padding: 4px 0;
+}
+
+.overlay-close:hover { opacity: 0.6; }
+
+.overlay-body {
+  padding: 64px var(--pad-x);
+  display: grid;
+  grid-template-columns: var(--col-num) var(--col-name) var(--col-desc);
+  gap: 0 32px;
+  flex: 1;
+}
+
+.overlay-section-label {
+  font-family: var(--f-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--silver);
+  padding-top: 8px;
+}
+
+.overlay-heading {
+  font-family: var(--f-head);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--jet);
+  line-height: 1.35;
+  margin-bottom: 32px;
+  grid-column: 2;
+}
+
+.overlay-text {
+  font-family: var(--f-body);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--slate);
+  line-height: 1.85;
+}
+
+.overlay-grid {
+  grid-column: 2 / 4;
+  display: grid;
+  grid-template-columns: var(--col-name) var(--col-desc);
+  gap: 0 32px;
+}
+
+/* ─── PROJECT DETAIL OVERLAY ──────────────────────────── */
+.detail-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(45,49,66,0.6);
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s ease;
+  padding: 40px;
+}
+
+.detail-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.detail-panel {
+  background: var(--white);
+  width: 100%;
+  max-width: 680px;
+  transform: translateY(20px);
+  transition: transform 0.32s ease;
+}
+
+.detail-overlay.active .detail-panel { transform: translateY(0); }
+
+.detail-panel-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 20px 40px;
+  border-bottom: var(--rule);
+}
+
+.detail-panel-num {
+  font-family: var(--f-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.detail-close {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--coral);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.18s;
+}
+
+.detail-close:hover { opacity: 0.6; }
+
+.detail-panel-body {
+  padding: 36px 40px 40px;
+}
+
+.detail-title {
+  font-family: var(--f-head);
+  font-size: 24px;
+  font-weight: 400;
+  color: var(--jet);
+  margin-bottom: 24px;
+  line-height: 1.3;
+}
+
+.detail-rule { height: 1px; background: var(--silver); margin-bottom: 24px; }
+
+.detail-desc {
+  font-family: var(--f-body);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--slate);
+  line-height: 1.85;
+  margin-bottom: 28px;
+}
+
+.detail-row {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 0;
+  border-top: var(--rule);
+  padding: 14px 0;
+}
+
+.detail-row:last-of-type { border-bottom: var(--rule); margin-bottom: 28px; }
+
+.detail-row-label {
+  font-family: var(--f-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--silver);
+  padding-top: 1px;
+}
+
+.detail-row-val {
+  font-family: var(--f-body);
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--jet);
+  line-height: 1.6;
+}
+
+.detail-link {
+  display: inline-block;
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--jet);
+  border-bottom: 1.5px solid var(--jet);
+  padding-bottom: 2px;
+  transition: color 0.18s, border-color 0.18s;
+}
+
+.detail-link:hover { color: var(--coral); border-color: var(--coral); }
+
+/* ─── RESPONSIVE ──────────────────────────────────────── */
+@media (max-width: 960px) {
+  :root { --pad-x: 32px; }
+  .hero-title { font-size: 36px; }
+  .project-row,
+  .table-header,
+  .site-footer {
+    grid-template-columns: 40px 1fr;
+  }
+  .row-desc  { grid-column: 2; }
+  .row-tags  { grid-column: 2; align-items: flex-start; flex-direction: row; flex-wrap: wrap; gap: 6px; }
+  .th-tags   { display: none; }
+  .footer-copy { display: none; }
+  .row-preview { display: none; }
+}
+
+@media (max-width: 600px) {
+  :root { --pad-x: 20px; }
+  .site-header { grid-template-columns: 1fr auto; gap: 16px; }
+  .header-meta { display: none; }
+  .hero-title { font-size: 28px; }
+  .overlay-body { padding: 40px 20px; grid-template-columns: 1fr; }
+  .overlay-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ─── HEADER ─────────────────────────────────────── -->
+<header class="site-header">
+  <div class="brand">AM<span>©</span></div>
+  <nav class="site-nav">
+    <a href="https://drive.google.com/file/d/1-cnXZ4adVATZUAdWep6w__ozOAHSr1hI/view?usp=sharing" id="cvLink">CV</a>
+    <a href="#" id="aboutLink">About</a>
+    <a href="mailto:anesumutonga@gmail.com">Email</a>
+  </nav>
+  <div class="header-meta" id="liveClock"></div>
+</header>
+
+<!-- ─── HERO ───────────────────────────────────────── -->
+<section class="hero">
+  <p class="hero-eyebrow">Selected Works — 2022–2025</p>
+  <h1 class="hero-title">Data &<br><em>Analytics</em> Engineering</h1>
+</section>
+
+<!-- ─── TABLE HEADER ───────────────────────────────── -->
+<div class="table-header">
+  <span>No.</span>
+  <span>Project</span>
+  <span>Description</span>
+  <span class="th-tags">Stack</span>
+</div>
+
+<!-- ─── PROJECT LIST ───────────────────────────────── -->
+<main id="projectList"></main>
+
+<!-- ─── FOOTER ─────────────────────────────────────── -->
+<footer class="site-footer">
+  <div class="footer-label">Contact</div>
+  <div class="footer-links">
+    <a href="mailto:anesumutonga@gmail.com">anesumutonga@gmail.com</a>
+    <a href="https://linkedin.com/in/anesu-mutonga" target="_blank" rel="noopener">LINKEDIN</a>
+  </div>
+  <div></div>
+  <div class="footer-copy">
+    <p>Anesu Leen Mutonga<br>Data & Analytics Engineer<br>Harare, Zimbabwe<br>© 2026</p>
+  </div>
+</footer>
+
+<!-- ─── ABOUT OVERLAY ───────────────────────────────── -->
+<div class="overlay" id="aboutOverlay" role="dialog" aria-modal="true" aria-label="About">
+  <div class="overlay-header">
+    <div class="brand">AM<span style="color:var(--coral);font-weight:400">©</span></div>
+    <button class="overlay-close" id="aboutClose">Close ✕</button>
+  </div>
+  <div class="overlay-body">
+    <div class="overlay-section-label">Bio</div>
+    <div class="overlay-grid">
+      <h2 class="overlay-heading" style="grid-column:1/3">Hi, I'm Anesu Leen Mutonga.</h2>
+      <div></div>
+      <p class="overlay-text">
+        I am a Data and Analytics Engineer with over 2 years of experience profiling, modelling, and transforming complex enterprise datasets into predictive assets that power strategic decision-making.<br><br>
+        I specialise in advanced statistical modelling, programmatic data interrogation (Pandas / NumPy), and designing cross-system validation methodologies that eliminate analytical risk and enforce strict data integrity.<br><br>
+        Proven track record leading data quality assurance for national public health initiatives and engineering risk-profiling models for large-scale agricultural operations (3,700+ farmers). Comfortable bridging raw backend architecture and executive business intelligence through Power BI frameworks and custom analytics solutions.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ─── PROJECT DETAIL OVERLAY ─────────────────────── -->
+<div class="detail-overlay" id="detailOverlay" role="dialog" aria-modal="true">
+  <div class="detail-panel" id="detailPanel">
+    <div class="detail-panel-header">
+      <span class="detail-panel-num" id="dNum"></span>
+      <button class="detail-close" id="detailClose">Close ✕</button>
+    </div>
+    <div class="detail-panel-body">
+      <div class="detail-title" id="dTitle"></div>
+      <div class="detail-rule"></div>
+      <p class="detail-desc" id="dDesc"></p>
+      <div id="dRows"></div>
+      <a href="#" class="detail-link" id="dLink">View Project →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── SCRIPTS ─────────────────────────────────────── -->
+<script>
+/* DATA */
+const projects = [
+  {
+    num: "01", name: "Loan Repayment Dashboard",
+    desc: "Executive Power BI dashboard tracking 3,500+ tobacco grower loans with cohort analysis and board-level storytelling.",
+    full: "An executive-grade Power BI dashboard built for Shasha Tobacco's board. Tracks loan repayment performance across 3,500+ tobacco growers with cohort breakdowns, a seasonal week-numbering system anchored to the buying period start date, and custom DAX measures designed for both granular operations and high-level strategic narrative.",
+    rows: [["Stack", "Power BI · DAX · SQL Server"], ["Type", "Executive Dashboard"], ["Year", "2024"], ["Client", "Shasha Tobacco"]],
+    tags: ["Power BI", "DAX", "SQL Server"]
+  },
+  {
+    num: "02", name: "Merchant Invoice Portal",
+    desc: "Flask web portal with ComponentGrade email routing, shipment upload blueprint and IIS deployment.",
+    full: "A Flask-based internal web portal deployed on IIS at Shasha Tobacco. Features a ComponentGrade-driven email splitting mechanism for Northern Tobacco, a shipment upload blueprint, Gmail SMTP integration, and automated routing logic — eliminating manual processing overhead and routing errors at scale.",
+    rows: [["Stack", "Flask · Python · IIS · Gmail SMTP"], ["Type", "Internal Web Application"], ["Year", "2024"], ["Client", "Shasha Tobacco"]],
+    tags: ["Flask", "Python", "IIS"]
+  },
+  {
+    num: "03", name: "National Health Data System",
+    desc: "Cross-system validation methodology for Zimbabwe's national public health data at Zim-TTECH.",
+    full: "At Zim-TTECH, led design and implementation of cross-system validation methodologies for Zimbabwe's national public health data systems. Built automated data quality pipelines using Pandas and NumPy, ensuring integrity across multi-source clinical datasets supporting national health authority reporting.",
+    rows: [["Stack", "Pandas · NumPy · Python"], ["Type", "Data Pipeline · Validation"], ["Year", "2023"], ["Client", "Zim-TTECH"]],
+    tags: ["Pandas", "NumPy", "Data Quality"]
+  },
+  {
+    num: "04", name: "Farmer Risk Prediction Model",
+    desc: "TensorFlow model generating risk scores for 3,700+ agricultural loan recipients based on delivery and seasonal patterns.",
+    full: "A TensorFlow-powered machine learning model for risk-profiling agricultural loan recipients. Analyses grower delivery history, loan uptake, and seasonal performance patterns to generate predictive risk scores that flag potential defaults before they occur — enabling proactive intervention by the finance team.",
+    rows: [["Stack", "TensorFlow · Python · Pandas"], ["Type", "ML · Predictive Modelling"], ["Year", "2024"], ["Client", "Shasha Tobacco"]],
+    tags: ["TensorFlow", "Python", "ML"]
+  },
+  {
+    num: "05", name: "PoultryLedger",
+    desc: "Mobile farm management app for Zimbabwean smallholder poultry farmers — end-to-end from Figma to build.",
+    full: "A mobile farm management application targeting Zimbabwean smallholder poultry farmers. Designed end-to-end from multiple Figma prototype iterations — including an Urbanist-style design system — through to a production build. Digitises flock records, feed tracking, and expense management for operators with limited technology access.",
+    rows: [["Stack", "Figma · React Native"], ["Type", "Mobile Application · AgriTech"], ["Year", "2025"], ["Client", "Self-initiated"]],
+    tags: ["Figma", "React Native", "AgriTech"]
+  },
+  {
+    num: "06", name: "Agricultural Delivery Tracker",
+    desc: "Multi-CTE SQL Server queries powering real-time dashboards for tobacco leaf delivery and loan disbursement tracking.",
+    full: "Complex multi-CTE SQL Server queries powering real-time dashboards tracking tobacco leaf deliveries, grower balances, and loan disbursements at Shasha Tobacco. Optimised for large dataset performance and integrated directly into Power BI reporting consumed daily by operations and finance teams.",
+    rows: [["Stack", "SQL Server · CTEs · Power BI"], ["Type", "Data Engineering · Dashboard"], ["Year", "2024"], ["Client", "Shasha Tobacco"]],
+    tags: ["SQL Server", "CTEs", "Power BI"]
+  },
+  {
+    num: "07", name: "Streamlit Executive Report",
+    desc: "Python Streamlit report layer translating grower analytics into clear KPIs for non-technical board members.",
+    full: "A Python Streamlit application delivering an interactive executive report layer on top of grower analytics data at Shasha Tobacco. Built specifically for non-technical board members, it translates complex underlying data pipelines into clear visual summaries and key performance indicators without requiring any BI tool expertise.",
+    rows: [["Stack", "Streamlit · Python"], ["Type", "Executive Reporting"], ["Year", "2024"], ["Client", "Shasha Tobacco"]],
+    tags: ["Streamlit", "Python", "Analytics"]
+  }
+];
+
+/* RENDER ROWS */
+const list = document.getElementById('projectList');
+projects.forEach((p, i) => {
+  const el = document.createElement('div');
+  el.className = 'project-row';
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('data-i', i);
+  el.innerHTML = `
+    <div class="row-preview">
+      <div class="row-preview-label">Project ${p.num}</div>
+      <div class="row-preview-name">${p.name}</div>
+      <div class="row-preview-tags">${p.tags.map(t=>`<span class="row-preview-tag">${t}</span>`).join('')}</div>
+    </div>
+    <div class="row-num">${p.num}</div>
+    <div class="row-name">${p.name}</div>
+    <div class="row-desc">${p.desc}</div>
+    <div class="row-tags">${p.tags.map(t=>`<div class="row-tag">${t}</div>`).join('')}</div>
+  `;
+  list.appendChild(el);
+});
+
+/* CURSOR-FOLLOW PREVIEW */
+document.querySelectorAll('.project-row').forEach(row => {
+  const preview = row.querySelector('.row-preview');
+  row.addEventListener('mousemove', e => {
+    preview.style.left = e.clientX + 'px';
+    preview.style.top  = e.clientY + 'px';
+  });
+});
+
+/* DETAIL MODAL */
+const detailOverlay = document.getElementById('detailOverlay');
+const detailClose   = document.getElementById('detailClose');
+
+function openDetail(i) {
+  const p = projects[i];
+  document.getElementById('dNum').textContent   = `Project ${p.num}`;
+  document.getElementById('dTitle').textContent = p.name;
+  document.getElementById('dDesc').textContent  = p.full;
+  document.getElementById('dRows').innerHTML    = p.rows.map(r =>
+    `<div class="detail-row">
+      <div class="detail-row-label">${r[0]}</div>
+      <div class="detail-row-val">${r[1]}</div>
+    </div>`
+  ).join('');
+  document.getElementById('dLink').href = '#';
+  detailOverlay.classList.add('active');
+}
+
+document.querySelectorAll('.project-row').forEach(row => {
+  row.addEventListener('click',  () => openDetail(+row.dataset.i));
+  row.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') openDetail(+row.dataset.i); });
+});
+
+detailClose.addEventListener('click', () => detailOverlay.classList.remove('active'));
+detailOverlay.addEventListener('click', e => { if(e.target===detailOverlay) detailOverlay.classList.remove('active'); });
+
+/* ABOUT OVERLAY */
+const aboutOverlay = document.getElementById('aboutOverlay');
+const aboutClose   = document.getElementById('aboutClose');
+const aboutLink    = document.getElementById('aboutLink');
+
+aboutLink.addEventListener('click', e => { e.preventDefault(); aboutOverlay.classList.add('active'); });
+aboutClose.addEventListener('click', () => aboutOverlay.classList.remove('active'));
+
+/* CV */
+document.getElementById('cvLink').addEventListener('click', e => {
+  e.preventDefault();
+  window.open('https://drive.google.com/file/d/1-cnXZ4adVATZUAdWep6w__ozOAHSr1hI/view?usp=sharing')
+
+});
+
+/* ESC */
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  aboutOverlay.classList.remove('active');
+  detailOverlay.classList.remove('active');
+});
+
+/* LIVE CLOCK */
+function tick() {
+  const now = new Date();
+  const hh  = String(now.getUTCHours()).padStart(2,'0');
+  const mm  = String(now.getUTCMinutes()).padStart(2,'0');
+  document.getElementById('liveClock').textContent = `${hh}:${mm} UTC`;
+}
+tick(); setInterval(tick, 10000);
+</script>
+</body>
+</html>
